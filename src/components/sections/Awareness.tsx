@@ -2,32 +2,33 @@
 
 import styles from "./awareness.module.css";
 
-const MINERALS = [
-  ["Na", "Натрий"],
-  ["K", "Калий"],
-  ["Mg", "Магний"],
-  ["Cl", "Хлорид"],
-  ["Ca", "Кальций"],
-  ["P", "Фосфор"],
+const MINERALS: [string, number, number][] = [
+  ["Na", -90, 44],
+  ["K", -30, 28],
+  ["Mg", 30, 46],
+  ["Cl", 90, 29],
+  ["Ca", 150, 44],
+  ["P", 210, 27],
 ];
 
 type Panel = {
   index: string;
+  ghost: string;
   tag: string;
   title: React.ReactNode;
   body: React.ReactNode;
-  extra?: React.ReactNode;
 };
 
 const PANELS: Panel[] = [
   {
     index: "01",
+    ghost: "Электролиты",
     tag: "Что такое электролиты",
     title: (
       <>
         <span className="accent">SIPME</span> для ритма
         <br />
-        современной жизни
+        <span className="outline">современной</span> жизни
       </>
     ),
     body: (
@@ -37,23 +38,14 @@ const PANELS: Panel[] = [
         организм и общее самочувствие.
       </>
     ),
-    extra: (
-      <ul className={styles.minerals}>
-        {MINERALS.map(([sym, name]) => (
-          <li key={sym}>
-            <span className={styles.sym}>{sym}</span>
-            <span className={styles.symName}>{name}</span>
-          </li>
-        ))}
-      </ul>
-    ),
   },
   {
     index: "02",
+    ghost: "Баланс",
     tag: "Влияние минералов",
     title: (
       <>
-        Как SIPME
+        <span className="outline">Как</span> SIPME
         <br />
         улучшает <span className="accent">состояние</span>
       </>
@@ -63,50 +55,50 @@ const PANELS: Panel[] = [
         <p>
           Минералы участвуют в процессах, которые ежедневно влияют на состояние
           организма — от поддержания водного баланса до работы мышц и нервной
-          системы. Электролиты помогают сохранять внутренний баланс и
-          поддерживать естественные процессы восстановления.
+          системы. Электролиты помогают сохранять внутренний баланс.
         </p>
         <p>
           Когда уровень жидкости и минералов поддерживается правильно, тело
-          легче справляется с ежедневной нагрузкой — это влияет на самочувствие,
-          энергию и концентрацию в течение дня.
+          легче справляется с ежедневной нагрузкой — это влияет на энергию и
+          концентрацию.
         </p>
       </>
     ),
   },
   {
     index: "03",
+    ghost: "Гидратация",
     tag: "Стресс не победим",
     title: (
       <>
         Почему обычная <span className="accent">вода</span>
         <br />
-        не всегда справляется
+        <span className="outline">не всегда</span> справляется
       </>
     ),
     body: (
       <>
         <p>
           Ежедневно организм сталкивается с нагрузкой — работа, стресс,
-          тренировки, недостаток сна и высокий ритм жизни постепенно расходуют
-          внутренние ресурсы. Вместе с жидкостью человек теряет важные минералы.
+          тренировки, недостаток сна. Вместе с жидкостью человек теряет важные
+          минералы.
         </p>
         <p>
           Роль электролитов в поддержании гидратации изучается в спортивной
-          медицине, нутрициологии и физиологии. Минералы в составе SIPME
-          участвуют в восстановлении водного баланса.
+          медицине, нутрициологии и физиологии.
         </p>
       </>
     ),
   },
   {
     index: "04",
+    ghost: "Наука",
     tag: "Исследования",
     title: (
       <>
         Что говорит <span className="accent">наука</span>
         <br />
-        про электролиты
+        про <span className="outline">электролиты</span>
       </>
     ),
     body: (
@@ -117,10 +109,7 @@ const PANELS: Panel[] = [
         </p>
         <p className={styles.refs}>
           <a href="#">→ Статья доктора биологических наук, профессора Н. К. Артемьева</a>
-          <a href="#">
-            → Исследование А. Ю. Шитова, заслуженного изобретателя РФ, ВМА им.
-            С. М. Кирова
-          </a>
+          <a href="#">→ Исследование А. Ю. Шитова, ВМА им. С. М. Кирова</a>
         </p>
       </>
     ),
@@ -135,29 +124,73 @@ export function Awareness() {
           Осведомленность
         </p>
 
-        <div className={`shell ${styles.shell}`}>
+        {/* слой 1: призрачное слово-гигант */}
+        <div className={styles.ghost} aria-hidden>
           {PANELS.map((p, i) => (
-            <article
-              key={p.index}
-              className={styles.panel}
-              data-aw-panel
-              data-active={i === 0 ? "true" : undefined}
-            >
+            <span key={p.index} className={styles.ghostWord} data-aw-ghost data-i={i}>
+              {p.ghost}
+            </span>
+          ))}
+        </div>
+
+        {/* слой 2: орбита минералов вокруг банки (со 2-го шага) */}
+        <div className={styles.orbit} data-aw-orbit aria-hidden>
+          <span className={styles.ring} style={{ inset: "0%" }} />
+          <span className={styles.ring} style={{ inset: "16%" }} />
+          <span className={styles.spin}>
+            {MINERALS.map(([sym, a, r], i) => {
+              const rad = (a * Math.PI) / 180;
+              const left = 50 + r * Math.cos(rad);
+              const top = 50 + r * Math.sin(rad);
+              return (
+                <span
+                  key={sym}
+                  className={styles.token}
+                  data-aw-token
+                  data-i={i}
+                  style={{ left: `${left}%`, top: `${top}%` }}
+                >
+                  <span className={styles.tokenInner}>{sym}</span>
+                </span>
+              );
+            })}
+          </span>
+        </div>
+
+        {/* текст по сторонам */}
+        <div className={`shell ${styles.shell}`}>
+          {PANELS.map((p) => (
+            <article key={p.index} className={styles.panel} data-aw-panel>
               <div className={styles.head} data-aw-side>
                 <p className={`eyebrow ${styles.tag}`}>{p.tag}</p>
                 <h2 className={`display ${styles.title}`}>{p.title}</h2>
               </div>
               <div className={styles.content} data-aw-side>
                 <div className={styles.body}>{p.body}</div>
-                {p.extra}
               </div>
             </article>
           ))}
         </div>
 
-        <div className={styles.counter}>
-          <span data-aw-counter>01</span>
-          <span className={styles.counterTotal}>/ 04</span>
+        {/* слой 3: прогресс по шагам */}
+        <div className={styles.progress}>
+          <span className={styles.num}>
+            <span data-aw-num>01</span>
+            <span className={styles.numTotal}>/ 0{PANELS.length}</span>
+          </span>
+          <div className={styles.bar}>
+            {PANELS.map((p, i) => (
+              <button
+                key={p.index}
+                className={styles.seg}
+                data-aw-seg
+                data-i={i}
+                aria-label={`Шаг ${i + 1}`}
+              >
+                <span className={styles.segFill} />
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </section>

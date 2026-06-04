@@ -1,0 +1,14 @@
+import { chromium } from "playwright";
+const b = await chromium.launch({ args:["--enable-unsafe-swiftshader","--use-gl=angle","--use-angle=swiftshader","--ignore-gpu-blocklist"] });
+const p = await b.newPage({ viewport:{width:1440,height:900}, deviceScaleFactor:1 });
+const errs=[]; p.on("pageerror",e=>errs.push(e.message));
+await p.goto("http://localhost:3001/", { waitUntil:"networkidle" });
+await p.waitForTimeout(3000);
+const top = await p.evaluate(()=>Math.round(document.querySelector("#sport").getBoundingClientRect().top+window.scrollY));
+await p.evaluate(y=>window.__lenis.scrollTo(y,{immediate:true,force:true}), top-600);
+await p.waitForTimeout(600);
+await p.evaluate(y=>window.__lenis.scrollTo(y,{immediate:true,force:true}), top+60);
+await p.waitForTimeout(2200);
+await p.screenshot({ path:"/tmp/shots/sport2.png" });
+console.log("errs",errs.slice(0,4));
+await b.close();

@@ -21,7 +21,6 @@ export function Header() {
       </nav>
 
       <div className={styles.right}>
-        <span className={styles.lang}>RU</span>
         <a href="#sport" className={styles.cta}>
           <span className={styles.dot} />
           Заказать

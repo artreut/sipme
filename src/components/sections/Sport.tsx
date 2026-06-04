@@ -11,7 +11,7 @@ export function Sport() {
             Для активного образа жизни
           </p>
           <h2 className={`display ${styles.heading}`} data-reveal>
-            Восста&shy;<span className="accent">новление</span>
+            <span className="outline">Восста</span>&shy;<span className="accent">новление</span>
           </h2>
 
           <p className={styles.lead} data-reveal>
@@ -22,13 +22,17 @@ export function Sport() {
 
           <div className={styles.stats}>
             <div className={styles.stat} data-reveal>
-              <span className={`mono ${styles.statVal}`}>×2</span>
+              <span className={`mono ${styles.statVal}`} data-stat data-to="2" data-pre="×" data-suf="">
+                ×2
+              </span>
               <span className={styles.statLabel}>
                 быстрее усвоение, чем у обычной воды
               </span>
             </div>
             <div className={styles.stat} data-reveal>
-              <span className={`mono ${styles.statVal}`}>6+</span>
+              <span className={`mono ${styles.statVal}`} data-stat data-to="6" data-pre="" data-suf="+">
+                6+
+              </span>
               <span className={styles.statLabel}>
                 ключевых минералов в каждой банке
               </span>
