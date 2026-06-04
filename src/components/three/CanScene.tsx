@@ -23,7 +23,7 @@ export default function CanScene() {
       <ambientLight intensity={0.55} />
       <directionalLight position={[4, 6, 5]} intensity={1.35} castShadow />
       <directionalLight position={[-6, 2, -2]} intensity={0.5} color="#ffd8c2" />
-      <directionalLight position={[0, -3, 4]} intensity={0.25} color="#ea5b5b" />
+      <directionalLight position={[0, -3, 4]} intensity={0.14} color="#ea5b5b" />
 
       <Suspense fallback={null}>
         <Can />
@@ -41,7 +41,7 @@ export default function CanScene() {
             color="#ffd9c6"
           />
           <Lightformer
-            intensity={0.8}
+            intensity={0.45}
             position={[4, 1, -2]}
             scale={[3, 6, 1]}
             color="#ea5b5b"
@@ -53,17 +53,30 @@ export default function CanScene() {
             scale={[8, 8, 1]}
             color="#ffffff"
           />
+          {/* узкая яркая полоса спереди — студийный блик + искры на каплях */}
+          <Lightformer
+            intensity={3.2}
+            position={[1.6, 0.4, 3]}
+            scale={[0.5, 5, 1]}
+            color="#ffffff"
+          />
+          <Lightformer
+            intensity={1.4}
+            position={[-1.8, 0.2, 2.4]}
+            scale={[0.35, 4, 1]}
+            color="#fff3ea"
+          />
         </Environment>
       </Suspense>
 
       <ContactShadows
-        position={[0, -1.55, 0]}
-        opacity={0.32}
-        blur={2.8}
-        far={4}
-        scale={9}
-        resolution={512}
-        color="#2d0304"
+        position={[0, -1.5, 0]}
+        opacity={0.42}
+        blur={2.3}
+        far={4.5}
+        scale={7.5}
+        resolution={1024}
+        color="#1a0606"
       />
     </Canvas>
   );
