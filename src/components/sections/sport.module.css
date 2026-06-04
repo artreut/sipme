@@ -1,0 +1,78 @@
+.sport {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  color: var(--cream);
+  padding-block: clamp(90px, 14vh, 180px);
+}
+
+.shell {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* весь текст справа на тёмном фоне; левая половина — коралловая банка */
+.copy {
+  width: min(48%, 620px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(22px, 3vh, 38px);
+}
+
+.copy .eyebrow {
+  color: var(--coral);
+}
+
+.heading {
+  font-size: clamp(44px, 6vw, 100px);
+  line-height: 0.9;
+  hyphens: manual;
+}
+
+.lead {
+  font-size: clamp(16px, 1.4vw, 21px);
+  line-height: 1.55;
+  color: rgba(250, 247, 237, 0.86);
+  max-width: 40ch;
+}
+
+.stats {
+  display: flex;
+  gap: 36px;
+  flex-wrap: wrap;
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 20ch;
+}
+.statVal {
+  font-size: clamp(34px, 3.6vw, 56px);
+  font-weight: 700;
+  color: var(--coral);
+  line-height: 1;
+}
+.statLabel {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.foot {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  padding-top: 22px;
+  border-top: 1px solid var(--hairline);
+}
+
+@media (max-width: 880px) {
+  .shell {
+    justify-content: flex-start;
+  }
+  .copy {
+    width: 100%;
+  }
+}
