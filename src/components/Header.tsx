@@ -3,7 +3,14 @@
 import { Logo } from "./Logo";
 import styles from "./header.module.css";
 
-const NAV = ["Технология", "Состав", "Исследование", "Купить", "Акция", "Контакты"];
+const NAV: [string, string][] = [
+  ["Технология", "#awareness"],
+  ["Состав", "#vitamins"],
+  ["Исследование", "#awareness"],
+  ["Купить", "#sport"],
+  ["Акция", "#sport"],
+  ["Контакты", "#sport"],
+];
 
 export function Header() {
   return (
@@ -13,9 +20,9 @@ export function Header() {
       </a>
 
       <nav className={styles.nav}>
-        {NAV.map((item) => (
-          <a key={item} href="#" className={styles.link}>
-            {item}
+        {NAV.map(([label, href]) => (
+          <a key={label} href={href} className={styles.link}>
+            {label}
           </a>
         ))}
       </nav>
