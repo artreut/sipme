@@ -79,3 +79,12 @@
     width: 100%;
   }
 }
+
+/* ——— мобила: текст слева, банка-коралл выглядывает справа ——— */
+@media (max-width: 768px) {
+  .sport { min-height: 0; padding-block: 80px 56px; }
+  .shell { justify-content: flex-start; }
+  .copy { width: 100%; padding-right: 32%; }
+  .heading { font-size: clamp(34px, 10vw, 60px); }
+  .stats { flex-direction: column; gap: 22px; }
+}

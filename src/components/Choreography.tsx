@@ -29,9 +29,20 @@ const POSES: Record<string, Pose> = {
   sport: { posX: -1.35, posY: 0, scale: 1.18, rotX: 0.03, rotZ: -0.18, parallax: 0.14, tint: [0.93, 0.42, 0.42], bg: "#1f0a0b", glow: 0.6, dark: true },
 };
 
+// Мобильные позы: банка меньше и «припаркована» к краю (чередуем стороны),
+// чтобы текст во всю ширину рядом читался без наложений.
+const MOBILE_POSES: Record<string, Pose> = {
+  hero: { posX: 0, posY: 0.62, scale: 0.66, rotX: 0.05, rotZ: -0.16, parallax: 0.12, tint: [1, 1, 1], bg: "#f8f0e8", glow: 0.7, dark: false },
+  awareness: { posX: 0.62, posY: 0.5, scale: 0.5, rotX: 0.05, rotZ: -0.12, parallax: 0.08, tint: [1, 1, 1], bg: "#f8f0e8", glow: 0.8, dark: false },
+  vitamins: { posX: -0.62, posY: 0.5, scale: 0.5, rotX: 0.05, rotZ: 0.12, parallax: 0.08, tint: [1, 1, 1], bg: "#f8f0e8", glow: 0.7, dark: false },
+  sport: { posX: 0.6, posY: 0.46, scale: 0.52, rotX: 0.03, rotZ: -0.14, parallax: 0.08, tint: [0.93, 0.42, 0.42], bg: "#1f0a0b", glow: 0.6, dark: true },
+};
+
 export default function Choreography() {
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    const POSE = isMobile ? MOBILE_POSES : POSES;
 
     const root = document.documentElement;
     const apply = (p: Pose, instant = false) => {
@@ -50,7 +61,7 @@ export default function Choreography() {
 
     const ctx = gsap.context(() => {
       // стартовая поза
-      apply(POSES.hero, true);
+      apply(POSE.hero, true);
 
       // ——— Осведомленность: pinned, дискретная смена шагов ———
       // Создаём ПЕРВЫМ и с высоким refreshPriority, чтобы спейсер пина был
@@ -63,7 +74,8 @@ export default function Choreography() {
       const numEl = document.querySelector<HTMLElement>("[data-aw-num]");
       const N = panels.length;
 
-      if (N) {
+      // На мобиле степпер отключаем — шаги показываются вертикальной лентой (CSS).
+      if (N && !isMobile) {
         const sidesOf = (i: number) => panels[i].querySelectorAll("[data-aw-side]");
 
         // начальное состояние: активен шаг 0 (видимость держит CSS data-active)
@@ -152,11 +164,11 @@ export default function Choreography() {
           start: "top 55%",
           end: "bottom 45%",
           onEnter: () => {
-            apply(POSES[id]);
+            apply(POSE[id]);
             (window as unknown as { __pose?: string }).__pose = id;
           },
           onEnterBack: () => {
-            apply(POSES[id]);
+            apply(POSE[id]);
             (window as unknown as { __pose?: string }).__pose = id;
           },
         });

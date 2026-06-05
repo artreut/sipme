@@ -240,3 +240,16 @@
     width: 70vw;
   }
 }
+
+/* ——— мобила: вертикальная лента шагов, банка выглядывает справа ——— */
+@media (max-width: 768px) {
+  .pin { height: auto; display: block; padding: 84px var(--pad-x) 56px; overflow: visible; }
+  .pin [data-aw-tag] { position: static; margin-bottom: 26px; }
+  .ghost, .orbit, .progress { display: none; }
+  .shell { height: auto; min-height: 0; }
+  .panel { position: static; opacity: 1; pointer-events: auto; display: block; padding: 32px 32% 32px 0; border-top: 1px solid rgba(45, 3, 4, 0.1); }
+  .panel:first-of-type { border-top: none; padding-top: 0; }
+  .head, .content { max-width: 100%; }
+  .title { font-size: clamp(28px, 8.5vw, 46px); }
+  .content { margin-top: 16px; }
+}

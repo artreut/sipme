@@ -173,3 +173,17 @@
     transform: none;
   }
 }
+
+/* ——— мобила: лента карточек, банка выглядывает слева ——— */
+@media (max-width: 768px) {
+  .vitamins { min-height: 0; padding-block: 80px 56px; }
+  .intro { position: static; width: 100%; transform: none; padding: 0 0 0 32%; }
+  .heading { font-size: clamp(30px, 9vw, 52px); }
+  .stage { position: static; height: auto; margin-top: 34px; }
+  .ring, .links, .point { display: none; }
+  .card {
+    position: static; left: auto; top: auto; width: 100%; margin: 0;
+    padding: 18px 0 18px 32%; background: transparent; box-shadow: none;
+    backdrop-filter: none; border-top: 1px solid rgba(45, 3, 4, 0.1);
+  }
+}
