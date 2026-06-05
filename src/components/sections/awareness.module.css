@@ -115,6 +115,14 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) clamp(280px, 26vw, 460px) minmax(0, 1fr);
   align-items: center;
+  /* видимость шага держит CSS через opacity родителя (дочерний текст
+     не может «перебить» opacity:0 группы) — наложений быть не может */
+  opacity: 0;
+  pointer-events: none;
+}
+.panel[data-active="true"] {
+  opacity: 1;
+  pointer-events: auto;
 }
 .head {
   grid-column: 1;

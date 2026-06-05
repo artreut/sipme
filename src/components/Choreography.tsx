@@ -66,12 +66,9 @@ export default function Choreography() {
       if (N) {
         const sidesOf = (i: number) => panels[i].querySelectorAll("[data-aw-side]");
 
-        // начальное состояние: активен шаг 0
-        gsap.set(panels, { autoAlpha: 1 });
-        panels.forEach((p, i) =>
-          gsap.set(p.querySelectorAll("[data-aw-side]"), i === 0 ? { yPercent: 0, autoAlpha: 1 } : { yPercent: 60, autoAlpha: 0 }),
-        );
+        // начальное состояние: активен шаг 0 (видимость держит CSS data-active)
         ghosts.forEach((g, i) => gsap.set(g, { autoAlpha: i === 0 ? 0.05 : 0, scale: i === 0 ? 1 : 0.96 }));
+        gsap.set(sidesOf(0), { yPercent: 0, autoAlpha: 1 });
 
         const paint = (i: number) => {
           if (numEl) numEl.textContent = String(i + 1).padStart(2, "0");
@@ -82,36 +79,26 @@ export default function Choreography() {
         paint(0);
 
         let current = 0;
-        // дискретный переход. На каждой смене убиваем ВСЕ текущие твины текста и
-        // разводим все панели заново — так при быстром скролле (с пропуском шагов)
-        // не остаётся «висящих» твинов и старый текст не наезжает на новый.
+        // Видимость шага гарантирует CSS (только data-active виден), поэтому
+        // наложений не бывает в принципе. JS лишь добавляет въезд текста.
         const showStep = (i: number, prev: number) => {
-          const dir = i > prev ? 1 : -1;
           gsap.killTweensOf("[data-aw-panel] [data-aw-side]");
           gsap.killTweensOf(ghosts);
 
-          // пропущенные панели (не активная и не предыдущая) — гасим мгновенно
-          panels.forEach((pnl, pi) => {
-            if (pi === i || pi === prev) return;
-            gsap.set(pnl.querySelectorAll("[data-aw-side]"), { yPercent: pi < i ? -45 : 55, autoAlpha: 0 });
-          });
-          // предыдущая — уезжает
-          if (prev !== i) {
-            gsap.to(sidesOf(prev), { yPercent: -45 * dir, autoAlpha: 0, duration: 0.3, stagger: 0.04, ease: "power2.in" });
-          }
-          // активная — приезжает (с задержкой, чтобы старый успел уйти)
+          // переключаем активную панель — старая мгновенно скрывается (CSS)
+          panels.forEach((pnl, pi) => pnl.setAttribute("data-active", String(pi === i)));
+          const dir = i > prev ? 1 : -1;
           gsap.fromTo(
             sidesOf(i),
-            { yPercent: 55 * dir, autoAlpha: 0 },
-            { yPercent: 0, autoAlpha: 1, duration: 0.5, stagger: 0.07, ease: "power3.out", delay: 0.18 },
+            { yPercent: 42 * dir, autoAlpha: 0 },
+            { yPercent: 0, autoAlpha: 1, duration: 0.55, stagger: 0.08, ease: "power3.out" },
           );
 
           // призрачное слово
           ghosts.forEach((g, gi) => {
-            if (gi !== i && gi !== prev) gsap.set(g, { autoAlpha: 0, scale: 0.96 });
+            if (gi !== i) gsap.set(g, { autoAlpha: 0, scale: 0.96 });
           });
-          if (prev !== i) gsap.to(ghosts[prev], { autoAlpha: 0, scale: 0.96, duration: 0.4 });
-          gsap.fromTo(ghosts[i], { autoAlpha: 0, scale: 0.96 }, { autoAlpha: 0.05, scale: 1, duration: 0.7, ease: "power2.out", delay: 0.1 });
+          gsap.fromTo(ghosts[i], { autoAlpha: 0, scale: 0.96 }, { autoAlpha: 0.05, scale: 1, duration: 0.7, ease: "power2.out" });
           paint(i);
         };
 

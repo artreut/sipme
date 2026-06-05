@@ -159,8 +159,13 @@ export function Awareness() {
 
         {/* текст по сторонам */}
         <div className={`shell ${styles.shell}`}>
-          {PANELS.map((p) => (
-            <article key={p.index} className={styles.panel} data-aw-panel>
+          {PANELS.map((p, i) => (
+            <article
+              key={p.index}
+              className={styles.panel}
+              data-aw-panel
+              data-active={i === 0 ? "true" : undefined}
+            >
               <div className={styles.head} data-aw-side>
                 <p className={`eyebrow ${styles.tag}`}>{p.tag}</p>
                 <h2 className={`display ${styles.title}`}>{p.title}</h2>
